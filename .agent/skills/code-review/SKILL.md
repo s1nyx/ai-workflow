@@ -9,6 +9,13 @@ Analyze a code and detect violations against the rules
 
 ## Rules
 
+Every violation you report must be backed by verifiable proof. Choose exactly one form:
+- **Citation** — a primary source (language spec, CVE, CWE, official framework/library docs, OWASP) with an exact URL and a verbatim excerpt (≤ 2 sentences) that directly justifies the violation. Blog posts, Stack Overflow, and AI-generated content are not acceptable.
+- **Test** — a minimal, self-contained snippet that reproduces the defect and produces an observable failure (crash, wrong output, data leak, perf regression…), with the expected vs actual behavior stated inline.
+
+If neither form can be provided with confidence, the violation MUST be omitted entirely.
+
+
 ### Correctness
 - Off-by-one errors, wrong loop bounds, incorrect conditions
 - Null/undefined dereferences, missing nil checks
@@ -86,11 +93,13 @@ Ensure the JSON adheres strictly to these rules:
 ```json
 {
   "violations": [
-    "path": "src/example.ts",
-    "lines": "12-14",
-    "severity": "error",
-    "rule": "Performance issues",
-    "message": "The function `foo` has a time complexity of O(n^2) which is inefficient for large inputs"
+    {
+        "path": "src/example.ts",
+        "lines": "12-14",
+        "severity": "error",
+        "rule": "Performance issues",
+        "message": "The function `foo` has a time complexity of O(n^2) which is inefficient for large inputs"
+    }
   ]
 }
 ```
