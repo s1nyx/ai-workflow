@@ -9,15 +9,64 @@ Analyze a code and detect violations against the rules
 
 ## Rules
 
-Check for at least:
-- Performance issues: the code must be ultra-efficient (in cpu, disk, network, memory, ...), code speed (big O notation)
-- Obvious bugs (off-by-one errors, null pointer dereferences, ...)
-- Security issues (SQL injection, XSS, ...)
-- Missing error handling (I/O, network, DB call, ...)
-- Hardcoded values
-- Code quality
-- Developer Experience
-- User Experience
+### Correctness
+- Off-by-one errors, wrong loop bounds, incorrect conditions
+- Null/undefined dereferences, missing nil checks
+- Race conditions, concurrency issues (shared state, missing locks)
+- Wrong types, implicit coercions, precision loss (float vs int)
+- Incorrect algorithm logic or edge case handling
+
+### Security
+- Injection vulnerabilities (SQL, command, LDAP, XPath...)
+- XSS, CSRF, open redirects
+- Sensitive data exposed in logs, errors, URLs, or client responses
+- Hardcoded secrets, tokens, credentials, or environment-specific values
+- Broken auth: missing authentication/authorization checks, privilege escalation
+- Insecure deserialization, path traversal, improper input validation
+
+### Error Handling
+- Unhandled exceptions, swallowed errors (empty catch blocks)
+- Missing error handling on I/O, network calls, DB queries, external APIs
+- Errors returned but not checked by the caller
+- No fallback or recovery logic for expected failure modes
+- Misleading or missing error messages surfaced to users or logs
+
+### Performance
+- Algorithmic inefficiency — flag Big-O complexity with justification (e.g. O(n²) vs O(n log n))
+- N+1 queries, missing DB indexes, unbounded result sets
+- Unnecessary re-computation inside loops, redundant network/disk calls
+- Missing caching for expensive or repeated operations
+- Large payloads, missing pagination, unstreamed large datasets
+- Blocking calls on hot paths or event loops
+
+### Reliability
+- Missing retries or timeouts on network/DB calls
+- No circuit breaker or graceful degradation for external dependencies
+- Resources not released (open files, DB connections, sockets, timers)
+- Operations that are not idempotent but should be
+- Logic that silently fails without observable signal (no log, no metric, no error)
+
+### Code Quality
+- Duplicated logic that should be extracted or shared
+- Functions/methods doing too many things (violating SRP)
+- Deeply nested control flow that could be flattened or extracted
+- Magic numbers or strings with no named constant or explanation
+- Dead code, unused variables, unreachable branches
+- Inconsistent naming (misleading, abbreviated, or ambiguous identifiers)
+
+### Developer Experience
+- Missing or outdated inline comments on non-obvious logic
+- Public API (functions, classes, modules) without documentation
+- Test coverage gaps on critical paths or edge cases
+- Flaky or non-deterministic test logic
+- Overly complex abstractions that reduce readability without clear benefit
+
+### User Experience
+- Error messages that are cryptic, technical, or unhelpful to end users
+- Missing loading states, empty states, or feedback on async operations
+- Inconsistent behavior across similar actions or flows
+- Accessibility issues (missing ARIA attributes, keyboard navigation, contrast)
+- Operations with no undo, confirmation, or warning for destructive actions
 
 ## Output format
 
