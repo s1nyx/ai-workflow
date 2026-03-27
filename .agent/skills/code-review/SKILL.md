@@ -87,19 +87,32 @@ Ensure the JSON adheres strictly to these rules:
 - `severity` (string) (enum: ["error", "warning", "info"])
 - `rule` (string) 
 - `message` (string)
+- `evidence` (object)
+  - `form` (string) (enum: ["citation", "test"])
+  - `source` (string) — URL if form=citation, language/runtime if form=test
+  - `excerpt` (string) — verbatim quote if form=citation, code snippet if form=test
+  - `expected` (string) — only if form=test: expected behavior
+  - `actual` (string) — only if form=test: actual/failing behavior
 
 ### Template
 
 ```json
 {
-  "violations": [
-    {
-        "path": "src/example.ts",
-        "lines": "12-14",
-        "severity": "error",
-        "rule": "Performance issues",
-        "message": "The function `foo` has a time complexity of O(n^2) which is inefficient for large inputs"
-    }
-  ]
+    "violations": [
+        {
+            "path": "src/example.ts",
+            "lines": "12-14",
+            "severity": "error",
+            "rule": "Performance issues",
+            "message": "The function `foo` has a time complexity of O(n^2) which is inefficient for large inputs",
+            "evidence": {
+                "form": "test",
+                "source": "Node.js 20",
+                "excerpt": "const r = foo([...Array(10000).keys()]); // takes >5s",
+                "expected": "Completes in < 100ms",
+                "actual": "Runs in O(n^2) — measured ~6s for n=10000"
+            }
+        }
+    ]
 }
 ```
