@@ -53,6 +53,16 @@ If neither form can be provided with confidence, the violation MUST be omitted e
 - Operations that are not idempotent but should be
 - Logic that silently fails without observable signal (no log, no metric, no error)
 
+### Observability
+- Missing structured logs on failure paths where diagnosis would otherwise be ambiguous
+- Missing metrics or counters for critical operations, retries, failures, or dropped events
+- Missing tracing/span propagation across async, network, or queue boundaries where causality would otherwise be lost
+- Logs that omit key correlation fields needed for debugging (request ID, user ID, job ID, trace ID), when such context exists
+- Error paths with no log, metric, or trace signal, making the failure silent to operators
+- Success/failure states that are not externally observable through logs, metrics, traces, or health/status signals
+- Alerts or monitoring hooks missing for high-severity failure modes that can otherwise remain undetected
+- Logs that are too sparse or too inconsistent to distinguish expected retries, degraded mode, and terminal failure
+
 ### Code Quality
 - Duplicated logic that should be extracted or shared
 - Functions/methods doing too many things (violating SRP)
